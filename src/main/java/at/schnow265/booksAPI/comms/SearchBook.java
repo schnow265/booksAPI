@@ -9,8 +9,6 @@ import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,13 +21,18 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Service
-@EnableAsync
 public class SearchBook {
 
     private static final String API_URL = "https://openlibrary.org/search.json?q=";
     static Logger logger = LoggerFactory.getLogger(SearchBook.class);
+
+    private ExecutorService executor
+            = Executors.newSingleThreadExecutor();
 
     @Autowired
     private BookRepository bookRepository;
@@ -92,14 +95,26 @@ public class SearchBook {
         return books;
     }
 
-    // TODO: Fix this not-async crap.
-    @Async("threadPoolTaskExecutor")
-    public void saveBooksAsync(List<Book> books) {
-        logger.info("Saving {} Books in the database...", books.size());
+    public Future<Integer> saveBooksAsync(List<Book> books) {
+        return executor.submit(() -> {
+            Logger al = LoggerFactory.getLogger("saveBooksAsync");
 
-        // Save all books in a separate thread using saveAll method of BookRepository
-        bookRepository.saveAll(books);
+            al.info("Saving {} Books in the database...", books.size());
 
-        logger.info("Completed the save!");
+            try {
+                al.warn("Going to sleep for 5 seconds");
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                al.error("My sleep has been interrupted.");
+                al.error(Arrays.toString(e.getStackTrace()));
+            }
+
+            // Save all books in a separate thread using saveAll method of BookRepository
+            bookRepository.saveAll(books);
+
+            al.info("Completed the save!");
+
+            return 0;
+        });
     }
 }
