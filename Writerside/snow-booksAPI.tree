@@ -6,6 +6,7 @@
                  name="booksAPI Docs" start-page="index.md">
 
     <toc-element topic="index.md"/>
+    <toc-element topic="Usage.md"/>
     <toc-element topic="DevDocs.md">
         <toc-element topic="TODOs.md"/>
     </toc-element>
