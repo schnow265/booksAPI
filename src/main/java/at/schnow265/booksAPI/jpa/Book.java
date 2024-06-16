@@ -7,15 +7,13 @@ import java.util.List;
 @Entity
 @Table(name = "book", schema = "public")
 public class Book {
-
+    // TODO: Find ISBN and store it in the DB
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
 
-    //@ElementCollection
-    //@CollectionTable(name = "author_name", joinColumns = @JoinColumn(name = "book_id"))
     @Column(name = "author_name")
     private List<String> authorName;
 

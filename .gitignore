@@ -19,6 +19,9 @@ target/
 *.iml
 *.ipr
 
+### Writerside ###
+webHelpSNOW-*
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/

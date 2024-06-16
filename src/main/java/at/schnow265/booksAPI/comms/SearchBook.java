@@ -92,6 +92,7 @@ public class SearchBook {
         return books;
     }
 
+    // TODO: Fix this not-async crap.
     @Async("threadPoolTaskExecutor")
     public void saveBooksAsync(List<Book> books) {
         logger.info("Saving {} Books in the database...", books.size());
