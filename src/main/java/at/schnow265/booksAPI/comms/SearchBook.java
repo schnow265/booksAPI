@@ -31,8 +31,7 @@ public class SearchBook {
     private static final String API_URL = "https://openlibrary.org/search.json?q=";
     static Logger logger = LoggerFactory.getLogger(SearchBook.class);
 
-    private ExecutorService executor
-            = Executors.newSingleThreadExecutor();
+    private static ExecutorService executor = Executors.newSingleThreadExecutor();
 
     @Autowired
     private BookRepository bookRepository;
@@ -76,13 +75,13 @@ public class SearchBook {
                     return parseAndReturnResults(response.toString());
                 } else {
                     logger.error("HTTP GET request failed with error code: {}", responseCode);
-                    throw new RuntimeException();
                 }
             } catch (IOException e) {
                 logger.error(Arrays.toString(e.getStackTrace()));
                 return null;
             }
         }
+        return null;
     }
 
     private List<Book> parseAndReturnResults(String response) {

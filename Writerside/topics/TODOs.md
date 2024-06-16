@@ -2,7 +2,7 @@
 
 ## comms Package
 
-- Data stored in the Database isn't being executed in another thread.
+- ~~Data stored in the Database isn't being executed in another thread.~~ (Done.)
 
 ## jpa Package
 

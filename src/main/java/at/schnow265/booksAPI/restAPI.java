@@ -1,5 +1,6 @@
 package at.schnow265.booksAPI;
 
+import at.schnow265.booksAPI.comms.SearchAuthors;
 import at.schnow265.booksAPI.comms.SearchBook;
 import at.schnow265.booksAPI.jpa.Book;
 import org.slf4j.Logger;
@@ -19,16 +20,21 @@ public class restAPI {
     @Autowired
     private SearchBook searchBookService;
 
-    @GetMapping("/search")
-    public List<Book> searchBooks(@RequestParam String name) {
-        try {
-            List<Book> res = searchBookService.searchBooks(name);
+    @Autowired
+    private SearchAuthors searchAuthorsService;
 
-            logger.info("{} items found! Returning them now!", res.size());
-            return res;
-        } catch (Exception e) {
-            logger.error(e.toString());
-            return null;
-        }
+    @GetMapping("/search/books")
+    public List<Book> searchBooks(@RequestParam String name) {
+        List<Book> res = searchBookService.searchBooks(name);
+
+        logger.info("{} items found! Returning them now!", res.size());
+        return res;
+    }
+
+    @GetMapping("/search/writer")
+    public List<Book> searchAuthor(@RequestParam String name) {
+        List<Book> res = searchAuthorsService.searchAuthor(name);
+        logger.info("{} items found", res.size());
+        return res;
     }
 }
