@@ -5,22 +5,18 @@ import at.schnow265.booksAPI.jpa.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
+@EnableAsync
 public class restAPI {
 
     static Logger logger = LoggerFactory.getLogger(restAPI.class);
-
-    @GetMapping("/")
-    public static String root() {
-        return "HELLO WORLD!";
-    }
 
     @Autowired
     private SearchBook searchBookService;
@@ -28,7 +24,6 @@ public class restAPI {
     @GetMapping("/search")
     public List<Book> searchBooks(@RequestParam String name) {
         try {
-            logger.info("Searching for '{}' in the Database...", name);
             List<Book> res =  searchBookService.searchBooks(name);
 
             logger.info("Elements found! Returning them now!");
@@ -37,10 +32,5 @@ public class restAPI {
             logger.error(e.toString());
             return null;
         }
-    }
-
-    @GetMapping("/error")
-    public static String error() {
-        return "An error occurred. Check the logs.";
     }
 }

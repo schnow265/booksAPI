@@ -2,9 +2,6 @@ package at.schnow265.booksAPI.jpa;
 
 import jakarta.persistence.*;
 
-import jakarta.persistence.*;
-
-import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -46,7 +43,7 @@ public class Book {
     private boolean publicScanB;
 
     @Column(name = "author_key")
-    private String authorKey;
+    private List<String> authorKey;
 
     // Getters and setters
     public Long getId() {
@@ -122,11 +119,11 @@ public class Book {
     }
 
     public List<String> getAuthorKey() {
-        return Collections.singletonList(authorKey);
+        return authorKey;
     }
 
     public void setAuthorKey(List<String> authorKey) {
-        this.authorKey = authorKey.toString();
+        this.authorKey = authorKey;
     }
 
     public boolean isPublicScanB() {

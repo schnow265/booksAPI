@@ -16,7 +16,7 @@ public class BooksApiApplication {
 		SpringApplication.run(BooksApiApplication.class, args);
 	}
 
-	@Bean
+	@Bean(name = "threadPoolTaskExecutor")
 	public Executor taskExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(2);
@@ -26,5 +26,4 @@ public class BooksApiApplication {
 		executor.initialize();
 		return executor;
 	}
-
 }
