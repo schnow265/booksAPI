@@ -26,7 +26,7 @@ public class restAPI {
         try {
             List<Book> res =  searchBookService.searchBooks(name);
 
-            logger.info("Elements found! Returning them now!");
+            logger.info("{} items found! Returning them now!", res.size());
             return res;
         } catch (Exception e) {
             logger.error(e.toString());

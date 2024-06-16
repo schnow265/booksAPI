@@ -14,8 +14,8 @@ public class Book {
 
     private String title;
 
-    @ElementCollection
-    @CollectionTable(name = "author_names", joinColumns = @JoinColumn(name = "book_id"))
+    //@ElementCollection
+    //@CollectionTable(name = "author_name", joinColumns = @JoinColumn(name = "book_id"))
     @Column(name = "author_name")
     private List<String> authorName;
 
