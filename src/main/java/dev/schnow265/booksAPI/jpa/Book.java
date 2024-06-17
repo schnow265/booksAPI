@@ -1,4 +1,4 @@
-package at.schnow265.booksAPI.jpa;
+package dev.schnow265.booksAPI.jpa;
 
 import jakarta.persistence.*;
 

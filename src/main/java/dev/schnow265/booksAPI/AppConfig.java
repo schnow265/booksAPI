@@ -1,4 +1,4 @@
-package at.schnow265.booksAPI;
+package dev.schnow265.booksAPI;
 
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Configuration;

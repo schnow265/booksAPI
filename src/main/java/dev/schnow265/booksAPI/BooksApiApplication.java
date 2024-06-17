@@ -1,4 +1,4 @@
-package at.schnow265.booksAPI;
+package dev.schnow265.booksAPI;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

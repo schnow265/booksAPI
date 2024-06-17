@@ -1,7 +1,7 @@
-package at.schnow265.booksAPI.comms;
+package dev.schnow265.booksAPI.comms;
 
-import at.schnow265.booksAPI.jpa.Book;
-import at.schnow265.booksAPI.jpa.BookRepository;
+import dev.schnow265.booksAPI.jpa.Book;
+import dev.schnow265.booksAPI.jpa.BookRepository;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
