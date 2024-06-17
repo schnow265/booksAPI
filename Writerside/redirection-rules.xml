@@ -22,4 +22,8 @@
         <description>Created after removal of "How to" from booksAPI Docs</description>
         <accepts>How-to.html</accepts>
     </rule>
+    <rule id="40489b8b">
+        <description>Created after removal of "External Libraries used" from booksAPI Docs</description>
+        <accepts>External-Libraries-used.html</accepts>
+    </rule>
 </rules>

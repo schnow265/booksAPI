@@ -23,3 +23,11 @@ The Response will be saved in a PostgreSQL Database.
 </tldr>
 
 Currently only returns the ID from openlibrary.org (thanks archive.org for that one!).
+
+## Force-Reloading the cache
+
+<tldr>
+    <p>Endpoint <shortcut>/refreshNext</shortcut> forces a clean of all matches from postgres.</p>
+</tldr>
+
+Sometimes we want to clean the Database and get a fresh result. Open ``/refreshNext`` in your browser, and the next query will be force-reloded.
