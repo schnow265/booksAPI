@@ -42,7 +42,7 @@ public class restAPI {
         return res;
     }
 
-    @GetMapping("/refreshNext")
+    @GetMapping("/search/refreshNext")
     public String forceRefresh() {
         refresh = true;
         return "The next querry will be force-refreshed from the API.";
