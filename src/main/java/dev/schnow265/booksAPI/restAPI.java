@@ -16,6 +16,7 @@ import java.util.List;
 public class restAPI {
 
     static Logger logger = LoggerFactory.getLogger(restAPI.class);
+    static boolean refresh = false;
 
     @Autowired
     private SearchBook searchBookService;
@@ -25,7 +26,8 @@ public class restAPI {
 
     @GetMapping("/search/books")
     public List<Book> searchBooks(@RequestParam String name) {
-        List<Book> res = searchBookService.searchBooks(name);
+        List<Book> res = searchBookService.searchBooks(name, refresh);
+        refresh = false;
 
         logger.info("{} items found! Returning them now!", res.size());
         return res;
@@ -33,8 +35,16 @@ public class restAPI {
 
     @GetMapping("/search/writer")
     public List<Book> searchAuthor(@RequestParam String name) {
-        List<Book> res = searchAuthorsService.searchAuthor(name);
+        List<Book> res = searchAuthorsService.searchAuthor(name, refresh);
+        refresh = false;
+
         logger.info("{} items found", res.size());
         return res;
+    }
+
+    @GetMapping("/refreshNext")
+    public String forceRefresh() {
+        refresh = true;
+        return "The next querry will be force-refreshed from the API.";
     }
 }

@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
 
 @Service
 public class SearchAuthors {
-    private static final String API_URL = "https://openlibrary.org/search/authors.json?q=";
+    private static final String API_URL = "https://openlibrary.org/search/authors.json?limit=99999&q=";
     static Logger logger = LoggerFactory.getLogger(SearchAuthors.class);
 
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -35,7 +35,7 @@ public class SearchAuthors {
     private BookRepository bookRepository;
 
     @Transactional
-    public List<Book> searchAuthor(String name) {
+    public List<Book> searchAuthor(String name, boolean refresh) {
         logger.info("Looking for Author '{}' in the Database", name);
 
         try {

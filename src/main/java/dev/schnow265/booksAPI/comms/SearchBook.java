@@ -1,11 +1,11 @@
 package dev.schnow265.booksAPI.comms;
 
-import dev.schnow265.booksAPI.jpa.Book;
-import dev.schnow265.booksAPI.jpa.BookRepository;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import dev.schnow265.booksAPI.jpa.Book;
+import dev.schnow265.booksAPI.jpa.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,21 +23,32 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 @Service
 public class SearchBook {
 
-    private static final String API_URL = "https://openlibrary.org/search.json?q=";
+    private static final String API_URL = "https://openlibrary.org/search.json?limit=99999&q=";
     static Logger logger = LoggerFactory.getLogger(SearchBook.class);
 
-    private static ExecutorService executor = Executors.newSingleThreadExecutor();
+    private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     @Autowired
     private BookRepository bookRepository;
 
     @Transactional
-    public List<Book> searchBooks(String query) {
+    public List<Book> searchBooks(String query, boolean forceReload) {
+        if (forceReload) {
+            logger.info("Purging the database of matches for '{}' to get fresh results.", query);
+            List<Book> victims = bookRepository.findByTitle(query);
+            try {
+                bookRepository.deleteAll(victims);
+                logger.info("All victims removed!");
+            } catch (IllegalArgumentException e) {
+                logger.error("Something happened when removing the victims!");
+                logger.error(Arrays.toString(e.getStackTrace()));
+            }
+        }
+
         logger.info("Searching for '{}' in the database...", query);
         // Check the database first
         List<Book> books = bookRepository.findByTitle(query);
@@ -94,26 +105,16 @@ public class SearchBook {
         return books;
     }
 
-    public Future<Integer> saveBooksAsync(List<Book> books) {
-        return executor.submit(() -> {
+    public void saveBooksAsync(List<Book> books) {
+        executor.submit(() -> {
             Logger al = LoggerFactory.getLogger("saveBooksAsync");
 
             al.info("Saving {} Books in the database...", books.size());
-
-            try {
-                al.warn("Going to sleep for 5 seconds");
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                al.error("My sleep has been interrupted.");
-                al.error(Arrays.toString(e.getStackTrace()));
-            }
 
             // Save all books in a separate thread using saveAll method of BookRepository
             bookRepository.saveAll(books);
 
             al.info("Completed the save!");
-
-            return 0;
         });
     }
 }

@@ -47,6 +47,14 @@
 			<artifactId>gson</artifactId>
 		</dependency>
 
+		<!-- WHY DID I NOT KNOW THAT THIS EXISTS -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.32</version>
+		</dependency>
+
+
 		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
