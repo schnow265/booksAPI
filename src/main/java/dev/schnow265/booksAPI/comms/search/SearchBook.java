@@ -1,4 +1,4 @@
-package dev.schnow265.booksAPI.comms;
+package dev.schnow265.booksAPI.comms.search;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

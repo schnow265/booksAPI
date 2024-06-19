@@ -1,7 +1,7 @@
 package dev.schnow265.booksAPI;
 
-import dev.schnow265.booksAPI.comms.SearchAuthors;
-import dev.schnow265.booksAPI.comms.SearchBook;
+import dev.schnow265.booksAPI.comms.search.SearchAuthors;
+import dev.schnow265.booksAPI.comms.search.SearchBook;
 import dev.schnow265.booksAPI.jpa.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package dev.schnow265.booksAPI.comms;
+package dev.schnow265.booksAPI.comms.search;
 
 import dev.schnow265.booksAPI.jpa.Book;
 import dev.schnow265.booksAPI.jpa.BookRepository;
