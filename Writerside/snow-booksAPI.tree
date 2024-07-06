@@ -8,6 +8,7 @@
     <toc-element topic="index.md"/>
     <toc-element topic="Usage.md"/>
     <toc-element topic="DevDocs.md">
+        <toc-element topic="Testing.md"/>
         <toc-element topic="Used-Libraries.md"/>
         <toc-element topic="TODOs.md"/>
     </toc-element>
