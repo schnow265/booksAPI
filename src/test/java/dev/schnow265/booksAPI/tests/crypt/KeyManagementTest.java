@@ -19,10 +19,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @ExtendWith(SpringExtension.class)
+@DisplayName("Key-Authentication checks")
 class KeyManagementTest {
 
     @Autowired
     private ApiKeyRepository apiKeyRepository;
+
+    @AfterEach
+    void tearDown() {
+        apiKeyRepository.deleteAll();
+    }
 
     @Autowired
     private KeyManagement keyManagement;
@@ -46,10 +52,5 @@ class KeyManagementTest {
     void invalidKey() {
         Optional<ApiKey> apiKey = keyManagement.verifyKey("invalid");
         assertNull(apiKey.orElse(null));
-    }
-
-    @AfterEach
-    void tearDown() {
-        apiKeyRepository.deleteAll();
     }
 }

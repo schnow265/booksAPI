@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BooksApiApplication.class)
+@DisplayName("Book Repository Checks")
 class BookTest {
     private static final Logger logging = LoggerFactory.getLogger(BookTest.class);
 

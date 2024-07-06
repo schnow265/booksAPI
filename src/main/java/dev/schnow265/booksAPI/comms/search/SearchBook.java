@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
 @Service
 public class SearchBook {
 
-    private static final String API_URL = "https://openlibrary.org/search.json?limit=99999&q=";
+    private static final String API_URL = "https://openlibrary.org/search.json?limit=999&q=";
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
     static Logger logger = LoggerFactory.getLogger(SearchBook.class);
     private final BookRepository bookRepository;
@@ -116,8 +116,9 @@ public class SearchBook {
             Logger al = LoggerFactory.getLogger("saveBooksAsync");
             try {
                 al.info("Attempting to save {} Books in the database...", books.size());
-                for (int i = 0; i < books.size(); i++) {
-                    bookRepository.save(books.get(i)); // This is being done to not run into a "this crap is way too big" exception
+                for (Book book : books) {
+                    //noinspection UseBulkOperation
+                    bookRepository.save(book); // This is being done to not run into a "this crap is way too big" exception
                 }
                 al.info("Completed the save!");
             } catch (Exception e) {

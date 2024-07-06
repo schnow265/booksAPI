@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
         classes = BooksApiApplication.class)
 @AutoConfigureMockMvc
+@DisplayName("Key Generation Algorithm Tests")
 class GenKeyTest {
 
     @Test

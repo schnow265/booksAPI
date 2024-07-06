@@ -15,7 +15,7 @@ import org.springframework.web.filter.GenericFilterBean;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@Service
+
 public class AuthenticationFilter extends GenericFilterBean {
     private final AuthenticationService auths = new AuthenticationService();
 

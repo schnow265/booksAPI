@@ -25,10 +25,8 @@ import java.util.concurrent.Executors;
 
 @Service
 public class SearchAuthors {
-    private static final String API_URL = "https://openlibrary.org/search/authors.json?limit=99999&q=";
+    private static final String API_URL = "https://openlibrary.org/search/authors.json?limit=999&q=";
     static Logger logger = LoggerFactory.getLogger(SearchAuthors.class);
-
-    private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     private final BookRepository bookRepository;
 

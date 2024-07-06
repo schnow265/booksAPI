@@ -18,13 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
+@DisplayName("Searching Books Tests")
 class SearchBookTest {
     private static final Logger logging = LoggerFactory.getLogger(SearchBookTest.class);
 
@@ -37,7 +39,7 @@ class SearchBookTest {
         String search = "The Lord of the Rings";
         SearchBook sb = new SearchBook(bookRepository);
 
-        List<Book> firstResult = sb.searchBooks(search, false);
+        List<Book> firstResult = sb.searchBooks(search, true);
         List<Book> secondResult = sb.searchBooks(search, false);
 
         assertEquals(firstResult, secondResult);

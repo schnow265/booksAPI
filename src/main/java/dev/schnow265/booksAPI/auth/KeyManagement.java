@@ -38,7 +38,6 @@ public class KeyManagement {
         }
     }
 
-
     public String createKey() {
         try {
             String apiKey = GenKey.generateApiKey(32);
