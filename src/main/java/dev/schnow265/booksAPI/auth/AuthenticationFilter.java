@@ -9,18 +9,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 
+@Service
 public class AuthenticationFilter extends GenericFilterBean {
+    private final AuthenticationService auths = new AuthenticationService();
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
         try {
-            Authentication authentication = AuthenticationService.getAuthentication((HttpServletRequest) request);
+            Authentication authentication = auths.getAuthentication((HttpServletRequest) request);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception exp) {
             HttpServletResponse httpResponse = (HttpServletResponse) response;

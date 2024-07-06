@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS public.book
     edition_count      INT,
     book_key           VARCHAR(255),
     ia                 TEXT[],
-    author_key         TEXT,
+    author_key         TEXT[],
     public_scan_b      BOOLEAN
 );
 
