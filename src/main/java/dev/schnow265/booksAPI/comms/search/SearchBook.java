@@ -51,46 +51,52 @@ public class SearchBook {
 
         logger.info("Searching for '{}' in the database...", query);
         // Check the database first
-        List<Book> books = bookRepository.findByTitle(query);
+        List<Book> books;
 
-        if (!books.isEmpty()) {
-            // Books found, process each book
-            for (Book book : books) {
-                logger.info("Found Book '{}' by {} in local cache.", book.getTitle(), book.getAuthorName());
-            }
-            return books;
-        } else {
-            try {
-                // No books found
-                logger.info("No books with title '{}' found in local cache.", query);
-                logger.info("Not found in Postgres, calling the API...");
+        try {
+            books = bookRepository.findByTitle(query);
 
-                // If not found in database, call the API
-                String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
-                URL url = new URL(API_URL + encodedQuery);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-
-                int responseCode = connection.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    logger.info("API has answered, running through the results.");
-                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    String inputLine;
-                    StringBuilder response = new StringBuilder();
-
-                    while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
-                    }
-                    in.close();
-
-                    return parseAndReturnResults(response.toString());
-                } else {
-                    logger.error("HTTP GET request failed with error code: {}", responseCode);
+            if (!books.isEmpty()) {
+                // Books found, process each book
+                for (Book book : books) {
+                    logger.info("Found Book '{}' by {} in local cache.", book.getTitle(), book.getAuthorName());
                 }
-            } catch (IOException e) {
-                logger.error(Arrays.toString(e.getStackTrace()));
-                return null;
+                return books;
+            } else {
+                try {
+                    // No books found
+                    logger.info("No books with title '{}' found in local cache.", query);
+                    logger.info("Not found in Postgres, calling the API...");
+
+                    // If not found in database, call the API
+                    String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
+                    URL url = new URL(API_URL + encodedQuery);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+
+                    int responseCode = connection.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        logger.info("API has answered, running through the results.");
+                        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        String inputLine;
+                        StringBuilder response = new StringBuilder();
+
+                        while ((inputLine = in.readLine()) != null) {
+                            response.append(inputLine);
+                        }
+                        in.close();
+
+                        return parseAndReturnResults(response.toString());
+                    } else {
+                        logger.error("HTTP GET request failed with error code: {}", responseCode);
+                    }
+                } catch (IOException e) {
+                    logger.error(Arrays.toString(e.getStackTrace()));
+                    return null;
+                }
             }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
         }
         return null;
     }
@@ -111,7 +117,7 @@ public class SearchBook {
             try {
                 al.info("Attempting to save {} Books in the database...", books.size());
                 for (int i = 0; i < books.size(); i++) {
-                    bookRepository.save(books.get(i));
+                    bookRepository.save(books.get(i)); // This is being done to not run into a "this crap is way too big" exception
                 }
                 al.info("Completed the save!");
             } catch (Exception e) {

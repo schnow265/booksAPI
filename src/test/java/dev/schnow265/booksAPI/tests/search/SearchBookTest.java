@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -51,6 +51,9 @@ class SearchBookTest {
 
         List<Book> firstResult = sb.searchBooks(search, true);
         List<Book> secondResult = sb.searchBooks(search, true);
+
+        assertNotNull(firstResult, "The first one is null");
+        assertNotNull(secondResult, "The second one is null");
 
         assertEquals(firstResult, secondResult);
     }
