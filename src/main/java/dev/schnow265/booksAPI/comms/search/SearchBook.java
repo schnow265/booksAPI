@@ -8,7 +8,6 @@ import dev.schnow265.booksAPI.jpa.Book;
 import dev.schnow265.booksAPI.jpa.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,12 +27,13 @@ import java.util.concurrent.Executors;
 public class SearchBook {
 
     private static final String API_URL = "https://openlibrary.org/search.json?limit=99999&q=";
-    static Logger logger = LoggerFactory.getLogger(SearchBook.class);
-
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
+    static Logger logger = LoggerFactory.getLogger(SearchBook.class);
+    private final BookRepository bookRepository;
 
-    @Autowired
-    private BookRepository bookRepository;
+    public SearchBook(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
 
     @Transactional
     public List<Book> searchBooks(String query, boolean forceReload) {
@@ -108,13 +108,15 @@ public class SearchBook {
     public void saveBooksAsync(List<Book> books) {
         executor.submit(() -> {
             Logger al = LoggerFactory.getLogger("saveBooksAsync");
-
-            al.info("Saving {} Books in the database...", books.size());
-
-            // Save all books in a separate thread using saveAll method of BookRepository
-            bookRepository.saveAll(books);
-
-            al.info("Completed the save!");
+            try {
+                al.info("Attempting to save {} Books in the database...", books.size());
+                for (int i = 0; i < books.size(); i++) {
+                    bookRepository.save(books.get(i));
+                }
+                al.info("Completed the save!");
+            } catch (Exception e) {
+                al.error(e.getMessage());
+            }
         });
     }
 }

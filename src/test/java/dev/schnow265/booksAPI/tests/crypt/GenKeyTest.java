@@ -1,16 +1,18 @@
-package dev.schnow265.booksAPI.tests;
+package dev.schnow265.booksAPI.tests.crypt;
 
 import dev.schnow265.booksAPI.BooksApiApplication;
 import dev.schnow265.booksAPI.utils.gen.GenKey;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
         classes = BooksApiApplication.class)
@@ -18,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GenKeyTest {
 
     @Test
+    @DisplayName("Verify Length")
     public void testGenerateApiKeyLength() {
         int keyLength = 32;
         String apiKey = GenKey.generateApiKey(keyLength);
@@ -25,6 +28,7 @@ class GenKeyTest {
     }
 
     @Test
+    @DisplayName("Key contains Uppercase Letters")
     public void testGenerateApiKeyContainsUppercase() {
         int keyLength = 32;
         String apiKey = GenKey.generateApiKey(keyLength);
@@ -33,6 +37,7 @@ class GenKeyTest {
     }
 
     @Test
+    @DisplayName("Key contains Lowercase Letters")
     public void testGenerateApiKeyContainsLowercase() {
         int keyLength = 32;
         String apiKey = GenKey.generateApiKey(keyLength);
@@ -41,6 +46,7 @@ class GenKeyTest {
     }
 
     @Test
+    @DisplayName("Key contains digits")
     public void testGenerateApiKeyContainsDigit() {
         int keyLength = 32;
         String apiKey = GenKey.generateApiKey(keyLength);

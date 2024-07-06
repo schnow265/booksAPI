@@ -1,14 +1,15 @@
-package dev.schnow265.booksAPI.tests;
+package dev.schnow265.booksAPI.tests.crypt;
 
 import dev.schnow265.booksAPI.auth.KeyManagement;
 import dev.schnow265.booksAPI.jpa.ApiKey;
 import dev.schnow265.booksAPI.jpa.ApiKeyRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 class KeyManagementTest {
 
     @Autowired
@@ -45,5 +46,10 @@ class KeyManagementTest {
     void invalidKey() {
         Optional<ApiKey> apiKey = keyManagement.verifyKey("invalid");
         assertNull(apiKey.orElse(null));
+    }
+
+    @AfterEach
+    void tearDown() {
+        apiKeyRepository.deleteAll();
     }
 }

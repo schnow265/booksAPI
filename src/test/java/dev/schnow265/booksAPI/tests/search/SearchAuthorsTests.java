@@ -1,13 +1,17 @@
-package dev.schnow265.booksAPI.tests;
+package dev.schnow265.booksAPI.tests.search;
 
 import dev.schnow265.booksAPI.comms.search.SearchAuthors;
 import dev.schnow265.booksAPI.jpa.Book;
+import dev.schnow265.booksAPI.jpa.BookRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,13 +19,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @AutoConfigureMockMvc
-@RunWith(SpringRunner.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ExtendWith(SpringExtension.class)
+@Transactional
 public class SearchAuthorsTests {
+
+    @Autowired
+    BookRepository bookRepository;
+
     @Test
     @DisplayName("Repeat requests into the DB return the same result.")
     void searchStephenKing() {
         String search = "Stephen King";
-        SearchAuthors sa = new SearchAuthors();
+        SearchAuthors sa = new SearchAuthors(bookRepository);
 
         List<Book> firstResult = sa.searchAuthor(search, false);
         List<Book> secondResult = sa.searchAuthor(search, false);

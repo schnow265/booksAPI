@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS public.book
 (
     id                 SERIAL PRIMARY KEY,
     title              VARCHAR(255),
-    author_name        TEXT[],
+    author_name        TEXT,
     first_publish_year INT,
     cover_i            INT,
     has_fulltext       BOOLEAN,

@@ -1,14 +1,13 @@
 package dev.schnow265.booksAPI.comms.search;
 
-import dev.schnow265.booksAPI.jpa.Book;
-import dev.schnow265.booksAPI.jpa.BookRepository;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import dev.schnow265.booksAPI.jpa.Book;
+import dev.schnow265.booksAPI.jpa.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,8 +30,11 @@ public class SearchAuthors {
 
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    @Autowired
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
+
+    public SearchAuthors(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
 
     @Transactional
     public List<Book> searchAuthor(String name, boolean refresh) {

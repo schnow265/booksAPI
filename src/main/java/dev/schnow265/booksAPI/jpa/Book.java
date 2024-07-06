@@ -19,7 +19,7 @@ public class Book {
 
     private String title;
 
-    @Column(name = "author_name")
+    @Column(name = "author_name", columnDefinition = "TEXT")
     private String authorName;
 
     @Column(name = "first_publish_year")

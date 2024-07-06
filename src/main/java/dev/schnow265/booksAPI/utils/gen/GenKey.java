@@ -8,7 +8,6 @@ import java.security.SecureRandom;
 public class GenKey {
     // Define characters allowed in the API key
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private static final int KEY_LENGTH = 32; // Define the length of the API key
     private static final Logger logging = LoggerFactory.getLogger(GenKey.class);
 
     public static String generateApiKey(int length) {
