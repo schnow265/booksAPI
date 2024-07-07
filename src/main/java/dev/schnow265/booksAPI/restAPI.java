@@ -1,21 +1,28 @@
 package dev.schnow265.booksAPI;
 
+import dev.schnow265.booksAPI.auth.AuthService;
+import dev.schnow265.booksAPI.auth.KeyManagement;
 import dev.schnow265.booksAPI.comms.search.SearchAuthors;
 import dev.schnow265.booksAPI.comms.search.SearchBook;
 import dev.schnow265.booksAPI.jpa.Book;
+import dev.schnow265.booksAPI.utils.httCats.CatProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class restAPI {
 
     static Logger logger = LoggerFactory.getLogger(restAPI.class);
+    static Logger authLogging = LoggerFactory.getLogger(AuthService.class);
     static boolean refresh = false;
 
     @Autowired
@@ -23,6 +30,25 @@ public class restAPI {
 
     @Autowired
     private SearchAuthors searchAuthorsService;
+
+    @Autowired
+    private AuthService authService;
+
+    private String beAuthenticated(Optional<String> key) {
+        if (key.isPresent()) {
+            authLogging.info("Attempting authentication...");
+            if (authService.isAuthenticated(key.get())) {
+                authLogging.info("Successfully authenticated!");
+                return "You have been authenticated!";
+            } else {
+                logger.info("Failed to authenticate! Key may be invalid!");
+                return CatProcessor.getCat(HttpStatus.UNAUTHORIZED);
+            }
+        } else {
+            authLogging.warn("No key provided!");
+            return CatProcessor.getCat(HttpStatus.UNAUTHORIZED);
+        }
+    }
 
     @GetMapping("/search/books")
     public List<Book> searchBooks(@RequestParam String name) {
@@ -46,5 +72,10 @@ public class restAPI {
     public String forceRefresh() {
         refresh = true;
         return "The next querry will be force-refreshed from the API.";
+    }
+
+    @GetMapping("/secret")
+    public String secretKey(@RequestHeader("X-API-KEY") Optional<String> key) {
+        return beAuthenticated(key);
     }
 }

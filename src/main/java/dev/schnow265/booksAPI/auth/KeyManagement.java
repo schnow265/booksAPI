@@ -3,8 +3,10 @@ package dev.schnow265.booksAPI.auth;
 import dev.schnow265.booksAPI.jpa.ApiKey;
 import dev.schnow265.booksAPI.jpa.ApiKeyRepository;
 import dev.schnow265.booksAPI.utils.gen.GenKey;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,10 +16,12 @@ public class KeyManagement {
 
     private static final Logger logging = LoggerFactory.getLogger(KeyManagement.class);
 
-    private final ApiKeyRepository repo;
+    @Autowired
+    private ApiKeyRepository repo;
 
-    public KeyManagement(ApiKeyRepository repo) {
-        this.repo = repo;
+    @PostConstruct
+    public void init() {
+        logging.info("KeyManagement initialized with repo: {}", repo);
     }
 
     public Optional<ApiKey> verifyKey(String key) {

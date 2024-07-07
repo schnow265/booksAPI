@@ -3,6 +3,7 @@ package dev.schnow265.booksAPI.tests.search;
 import dev.schnow265.booksAPI.comms.search.SearchAuthors;
 import dev.schnow265.booksAPI.jpa.Book;
 import dev.schnow265.booksAPI.jpa.BookRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,10 +24,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(SpringExtension.class)
 @Transactional
 @DisplayName("Searching Authors Tests")
-public class SearchAuthorsTests {
+class SearchAuthorsTests {
 
     @Autowired
     BookRepository bookRepository;
+
+    @AfterEach
+    public void setUp() {
+        bookRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("Repeat requests into the DB return the same result.")

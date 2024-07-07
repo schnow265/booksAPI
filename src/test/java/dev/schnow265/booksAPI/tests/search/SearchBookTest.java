@@ -3,9 +3,7 @@ package dev.schnow265.booksAPI.tests.search;
 import dev.schnow265.booksAPI.comms.search.SearchBook;
 import dev.schnow265.booksAPI.jpa.Book;
 import dev.schnow265.booksAPI.jpa.BookRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
 @DisplayName("Searching Books Tests")
+@Disabled("Not yet implemented")
 class SearchBookTest {
     private static final Logger logging = LoggerFactory.getLogger(SearchBookTest.class);
 

@@ -1,7 +1,7 @@
 package dev.schnow265.booksAPI.tests.jpa;
 
 import dev.schnow265.booksAPI.BooksApiApplication;
-import dev.schnow265.booksAPI.jpa.BookRepository;
+import dev.schnow265.booksAPI.jpa.ApiKeyRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = BooksApiApplication.class)
-@DisplayName("Book Repository Checks")
-class BookTest {
-    private static final Logger logging = LoggerFactory.getLogger(BookTest.class);
+@DisplayName("API Key Repository Checks")
+class ApiKeyTest {
+    private static final Logger logging = LoggerFactory.getLogger(ApiKeyTest.class);
 
     @Autowired
-    BookRepository bookRepo;
+    ApiKeyRepository apiKeyRepository;
 
     @Test
     @DisplayName("Verify that a search doesn't throw an error")
@@ -30,7 +30,7 @@ class BookTest {
         boolean passing;
 
         try {
-            bookRepo.findByTitle("");
+            apiKeyRepository.findByKey("");
             passing = true;
         } catch (Exception e) {
             passing = false;
