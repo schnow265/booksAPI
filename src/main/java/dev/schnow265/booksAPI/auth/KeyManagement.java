@@ -55,4 +55,15 @@ public class KeyManagement {
             return null;
         }
     }
+
+    public boolean useOTKey(String oneTimeKey) {
+        Optional<ApiKey> verifiedKey = verifyKey(oneTimeKey);
+
+        if (verifiedKey.isPresent()) {
+            repo.delete(verifiedKey.get());
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

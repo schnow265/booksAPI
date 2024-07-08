@@ -53,4 +53,19 @@ class KeyManagementTest {
         Optional<ApiKey> apiKey = keyManagement.verifyKey("invalid");
         assertNull(apiKey.orElse(null));
     }
+
+    @Test
+    @DisplayName("Use One-Time-Key and verify that it has been deleted")
+    void oneTimeKey() {
+        String key = keyManagement.createKey();
+
+        Optional<ApiKey> apiKey = keyManagement.verifyKey(key);
+        assertNotNull(apiKey.orElse(null));
+
+        boolean pass = keyManagement.useOTKey(key);
+        assertTrue(pass);
+
+        Optional<ApiKey> deletedKey = keyManagement.verifyKey(key);
+        assertFalse(deletedKey.isPresent());
+    }
 }

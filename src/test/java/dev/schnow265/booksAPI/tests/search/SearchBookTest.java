@@ -36,7 +36,7 @@ class SearchBookTest {
     @DisplayName("Repeat Requests of the same book title should return the same list of books")
     void searchLOTR() {
         String search = "The Lord of the Rings";
-        SearchBook sb = new SearchBook(bookRepository);
+        SearchBook sb = new SearchBook();
 
         List<Book> firstResult = sb.searchBooks(search, true);
         List<Book> secondResult = sb.searchBooks(search, false);
@@ -48,7 +48,7 @@ class SearchBookTest {
     @DisplayName("Force-Reload returns the same result")
     void forceReload() {
         String search = "The Lord of the Rings";
-        SearchBook sb = new SearchBook(bookRepository);
+        SearchBook sb = new SearchBook();
 
         List<Book> firstResult = sb.searchBooks(search, true);
         List<Book> secondResult = sb.searchBooks(search, true);

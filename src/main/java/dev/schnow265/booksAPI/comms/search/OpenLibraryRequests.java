@@ -8,6 +8,7 @@ import dev.schnow265.booksAPI.jpa.Book;
 import dev.schnow265.booksAPI.jpa.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -19,19 +20,13 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Service
 public class OpenLibraryRequests {
     static Logger logger = LoggerFactory.getLogger(OpenLibraryRequests.class);
-    private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    private final BookRepository bookRepository;
-
-    public OpenLibraryRequests(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+    @Autowired
+    private  BookRepository bookRepository;
 
     private List<Book> parseAndReturnResults(String response) {
         logger.info("Parsing API Response...");
@@ -41,25 +36,18 @@ public class OpenLibraryRequests {
         List<Book> books = gson.fromJson(jsonResponse.getAsJsonArray("docs"), new TypeToken<List<Book>>() {
         }.getType());
 
-        saveBooksAsync(books);
+        try {
+            logger.info("Attempting to save {} Books in the database...", books.size());
+            for (Book book : books) {
+                //noinspection UseBulkOperation
+                bookRepository.save(book); // This is being done to not run into a "this crap is way too big" exception
+            }
+            logger.info("Completed the save!");
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
 
         return books;
-    }
-
-    private void saveBooksAsync(List<Book> books) {
-        executor.submit(() -> {
-            Logger al = LoggerFactory.getLogger("saveBooksAsync");
-            try {
-                al.info("Attempting to save {} Books in the database...", books.size());
-                for (Book book : books) {
-                    //noinspection UseBulkOperation
-                    bookRepository.save(book); // This is being done to not run into a "this crap is way too big" exception
-                }
-                al.info("Completed the save!");
-            } catch (Exception e) {
-                al.error(e.getMessage());
-            }
-        });
     }
 
     public List<Book> sendRequest(String query, String API_URL) throws IOException {

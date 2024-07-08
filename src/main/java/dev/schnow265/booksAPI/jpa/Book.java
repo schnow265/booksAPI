@@ -45,14 +45,13 @@ public class Book {
     @Column(name = "public_scan_b")
     private boolean publicScanB;
 
-    // Wenn authorKey auch eine Sammlung ist, sollte es als @ElementCollection definiert werden.
+    // If authorKey is a Collection, it should be also made with @ElementCollection
     @ElementCollection
     @CollectionTable(name = "author_key", joinColumns = @JoinColumn(name = "book_id"))
     @Column(name = "author_key")
     private List<String> authorKey;
 
-
-    // Crap for Unit Testing
+    // Crap for Unit Testing. Also, what the fuck am I overriding here?
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

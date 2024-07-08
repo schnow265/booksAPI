@@ -38,7 +38,7 @@ class SearchAuthorsTests {
     @DisplayName("Repeat requests into the DB return the same result.")
     void searchStephenKing() {
         String search = "Stephen King";
-        SearchAuthors sa = new SearchAuthors(bookRepository);
+        SearchAuthors sa = new SearchAuthors();
 
         List<Book> firstResult = sa.searchAuthor(search, false);
         List<Book> secondResult = sa.searchAuthor(search, false);

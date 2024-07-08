@@ -4,6 +4,7 @@ import dev.schnow265.booksAPI.jpa.Book;
 import dev.schnow265.booksAPI.jpa.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,15 +17,13 @@ public class SearchBook {
 
     private static final String API_URL = "https://openlibrary.org/search.json?limit=999&q=";
     static Logger logger = LoggerFactory.getLogger(SearchBook.class);
-    private final BookRepository bookRepository;
 
-    public SearchBook(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+    @Autowired
+    BookRepository bookRepository;
 
     @Transactional
     public List<Book> searchBooks(String query, boolean forceReload) {
-        OpenLibraryRequests req = new OpenLibraryRequests(bookRepository);
+        OpenLibraryRequests req = new OpenLibraryRequests();
 
         req.forceRefresh(forceReload, query);
 

@@ -21,7 +21,6 @@ import java.util.Optional;
 public class restAPI {
 
     static Logger logger = LoggerFactory.getLogger(restAPI.class);
-    static Logger authLogging = LoggerFactory.getLogger(AuthService.class);
     static boolean refresh = false;
 
     @Autowired
@@ -33,28 +32,16 @@ public class restAPI {
     @Autowired
     private AuthService authService;
 
-    private String beAuthenticated(Optional<String> key) {
-        if (key.isPresent()) {
-            authLogging.info("Attempting authentication...");
-            if (authService.isAuthenticated(key.get())) {
-                authLogging.info("Successfully authenticated!");
-                return "You have been authenticated!";
-            } else {
-                logger.info("Failed to authenticate! Key may be invalid!");
-                return CatProcessor.getCat(HttpStatus.UNAUTHORIZED);
-            }
-        } else {
-            authLogging.warn("No key provided!");
-            return CatProcessor.getCat(HttpStatus.UNAUTHORIZED);
-        }
-    }
-
     @GetMapping("/search/books")
     public List<Book> searchBooks(@RequestParam String name) {
         List<Book> res = searchBookService.searchBooks(name, refresh);
         refresh = false;
+        try {
+            logger.info("{} items found! Returning them now!", res.size());
+        } catch (NullPointerException e) {
+            logger.warn("NPE received.");
+        }
 
-        logger.info("{} items found! Returning them now!", res.size());
         return res;
     }
 
@@ -75,6 +62,11 @@ public class restAPI {
 
     @GetMapping("/secret")
     public String secretKey(@RequestHeader("X-API-KEY") Optional<String> key) {
-        return beAuthenticated(key);
+        return authService.beAuthenticated(key);
+    }
+
+    @GetMapping("/cat/teapot")
+    public String teapot() {
+        return CatProcessor.getCat(HttpStatus.I_AM_A_TEAPOT);
     }
 }
